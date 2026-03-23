@@ -1,4 +1,4 @@
-package io.quarkiverse.rabbitmqclient;
+package io.quarkiverse.rabbitmqclient.runtime;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,6 +14,9 @@ import com.rabbitmq.client.AlreadyClosedException;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.MetricsCollector;
 import com.rabbitmq.client.ShutdownListener;
+
+import io.quarkiverse.rabbitmqclient.RabbitMQClient;
+import io.quarkiverse.rabbitmqclient.RabbitMQClientConfig;
 
 /**
  * RabbitMQ client implementation for {@link RabbitMQClient}
@@ -56,20 +59,18 @@ class RabbitMQClientImpl implements RabbitMQClient {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public void disconnect() {
-
+    public void close() {
         CountDownLatch cdl = new CountDownLatch(connections.size());
         ShutdownListener l = cause -> {
             cdl.countDown();
         };
 
-        int closeTimeOut = params.getConfig().connectionCloseTimeout;
+        int closeTimeOut = params.getConfig().connectionCloseTimeout();
         connections.forEach((name, connection) -> {
             try {
                 connection.addShutdownListener(l);
                 log.debug("Closing connection {} with RabbitMQ broker.", name);
-                connection.close(params.getConfig().connectionCloseTimeout);
+                connection.close(params.getConfig().connectionCloseTimeout());
                 log.debug("Closed connection {} with RabbitMQ broker.", name);
             } catch (AlreadyClosedException ex) {
                 log.debug("Already closed connection {} with RabbitMQ broker.", name);
@@ -81,20 +82,30 @@ class RabbitMQClientImpl implements RabbitMQClient {
             if (closeTimeOut < 0) {
                 cdl.await();
             } else {
-                if (!cdl.await((long) params.getConfig().connectionCloseTimeout * connections.size(), TimeUnit.MILLISECONDS)) {
+                if (!cdl.await((long) params.getConfig().connectionCloseTimeout() * connections.size(),
+                        TimeUnit.MILLISECONDS)) {
                     log.warn("Disconnecting RabbitMQ client connections timed out.");
                 }
             }
         } catch (InterruptedException ie) {
             log.warn("Disconnecting RabbitMQ client was interrupted.", ie);
         }
+
     }
 
     /**
-     * Gets the name of the client.
+     * @inheritDoc
      */
     @Override
-    public String getName() {
-        return params.getName();
+    public String getId() {
+        return params.getId();
+    }
+
+    public boolean isDefault() {
+        return params.isDefault();
+    }
+
+    public RabbitMQClientConfig getConfig() {
+        return params.getConfig();
     }
 }

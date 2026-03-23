@@ -1,7 +1,7 @@
 package io.quarkiverse.rabbitmqclient;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class DefaultAndOtherClientService {
@@ -10,7 +10,11 @@ public class DefaultAndOtherClientService {
     RabbitMQClient rabbitMQClient;
 
     @Inject
-    @NamedRabbitMQClient("other")
-    RabbitMQClient otherRabbitMQClient;
+    @NamedRabbitMQClient("ssl")
+    RabbitMQClient sslRabbitMQClient;
+
+    @Inject
+    @NamedRabbitMQClient("mtls")
+    RabbitMQClient mtlsRabbitMQClient;
 
 }

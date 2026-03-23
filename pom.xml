@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>io.quarkiverse</groupId>
         <artifactId>quarkiverse-parent</artifactId>
-        <version>12</version>
+        <version>21</version>
     </parent>
-
     <groupId>io.quarkiverse.rabbitmqclient</groupId>
     <artifactId>quarkus-rabbitmq-client-parent</artifactId>
-    <version>0.5.4-SNAPSHOT</version>
+    <version>3.3.1-SNAPSHOT</version>
     <name>Quarkus RabbitMQ Client - Parent</name>
-
     <packaging>pom</packaging>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.parameters>true</maven.compiler.parameters>
-        <quarkus.version>2.16.0.Final</quarkus.version>
-        <compiler-plugin.version>3.10.1</compiler-plugin.version>
-        <exec-plugin.version>3.1.0</exec-plugin.version>
-        <amqp-client.version>5.16.0</amqp-client.version>
-        <testcontainers.version>1.17.6</testcontainers.version>
+        <quarkus.version>3.34.0</quarkus.version>
+        <compiler-plugin.version>3.11.0</compiler-plugin.version>
+        <surefire-plugin.version>3.5.5</surefire-plugin.version>
+        <exec-plugin.version>3.6.3</exec-plugin.version>
+        <amqp-client.version>5.29.0</amqp-client.version>
     </properties>
-
+    <scm>
+        <connection>scm:git:git@github.com:quarkiverse/quarkus-rabbitmq-client.git</connection>
+        <developerConnection>scm:git:git@github.com:quarkiverse/quarkus-rabbitmq-client.git</developerConnection>
+        <url>https://github.com/quarkiverse/quarkus-rabbitmq-client</url>
+        <tag>HEAD</tag>
+    </scm>
     <modules>
         <module>deployment</module>
         <module>runtime</module>
@@ -51,7 +52,31 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${compiler-plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${surefire-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>io.quarkus</groupId>
+                    <artifactId>quarkus-config-doc-maven-plugin</artifactId>
+                    <version>${quarkus.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
+    <profiles>
+        <profile>
+            <id>docs</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            <modules>
+                <module>docs</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>

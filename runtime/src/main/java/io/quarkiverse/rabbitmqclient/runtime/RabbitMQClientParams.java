@@ -1,9 +1,10 @@
-package io.quarkiverse.rabbitmqclient;
+package io.quarkiverse.rabbitmqclient.runtime;
 
 import java.util.concurrent.ExecutorService;
 
+import io.quarkiverse.rabbitmqclient.RabbitMQClient;
+import io.quarkiverse.rabbitmqclient.RabbitMQClientConfig;
 import io.quarkus.runtime.LaunchMode;
-import io.quarkus.runtime.TlsConfig;
 
 /**
  * RabbitMQ client parameters for creation of {@link RabbitMQClient}
@@ -12,18 +13,18 @@ import io.quarkus.runtime.TlsConfig;
  */
 class RabbitMQClientParams {
 
-    private String name;
+    private String id;
     private RabbitMQClientConfig config;
-    private TlsConfig tlsConfig;
     private ExecutorService executorService;
     private LaunchMode launchMode;
+    private boolean isDefault = false;
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public RabbitMQClientConfig getConfig() {
@@ -32,14 +33,6 @@ class RabbitMQClientParams {
 
     public void setConfig(RabbitMQClientConfig config) {
         this.config = config;
-    }
-
-    public TlsConfig getTlsConfig() {
-        return tlsConfig;
-    }
-
-    public void setTlsConfig(TlsConfig tlsConfig) {
-        this.tlsConfig = tlsConfig;
     }
 
     public ExecutorService getExecutorService() {
@@ -56,5 +49,13 @@ class RabbitMQClientParams {
 
     public void setLaunchMode(LaunchMode launchMode) {
         this.launchMode = launchMode;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
     }
 }

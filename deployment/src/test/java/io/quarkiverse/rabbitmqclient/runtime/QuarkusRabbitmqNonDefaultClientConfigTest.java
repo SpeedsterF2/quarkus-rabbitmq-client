@@ -1,47 +1,39 @@
-package io.quarkiverse.rabbitmqclient;
+package io.quarkiverse.rabbitmqclient.runtime;
 
 import java.util.Properties;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import io.quarkus.runtime.TlsConfig;
+import io.quarkiverse.rabbitmqclient.RabbitMQClientsConfig;
 import io.quarkus.test.QuarkusUnitTest;
 
-public class QuarkusRabbitmqMinimalClientConfigTest extends RabbitMQConfigTest {
+public class QuarkusRabbitmqNonDefaultClientConfigTest extends RabbitMQConfigTest {
 
     @RegisterExtension
     static final QuarkusUnitTest unitTest = new QuarkusUnitTest() // Start unit test with your extension loaded
             .setFlatClassPath(true)
             .setArchiveProducer(() -> ShrinkWrap.create(JavaArchive.class)
-                    .addAsResource(QuarkusRabbitmqMinimalClientConfigTest.class.getResource("/minimal-properties.properties"),
+                    .addAsResource(
+                            QuarkusRabbitmqNonDefaultClientConfigTest.class.getResource("/non-default-properties.properties"),
                             "application.properties"));
 
     @Inject
     RabbitMQClientsConfig config;
 
-    @Inject
-    TlsConfig tlsConfig;
-
     @Test
     public void testConnectionFactoryProperties() {
-        assertRabbitMQConfig(config.defaultClient);
-
-        config.namedClients.forEach((n, c) -> {
-            assertRabbitMQConfig(c);
-        });
-    }
-
-    private void assertRabbitMQConfig(RabbitMQClientConfig config) {
         RabbitMQClientParams params = new RabbitMQClientParams();
-        params.setConfig(config);
-        params.setTlsConfig(tlsConfig);
+        params.setConfig(config.clients().get(RabbitMQClientsConfig.DEFAULT_CLIENT_NAME));
 
         Properties properties = RabbitMQHelper.newProperties(params);
-        assertRabbitMQConfig(config, tlsConfig, properties);
+        assertRabbitMQConfig(config.clients().get(RabbitMQClientsConfig.DEFAULT_CLIENT_NAME), properties);
+        Assertions.assertEquals(200, config.clients().get(RabbitMQClientsConfig.DEFAULT_CLIENT_NAME).connectionCloseTimeout());
     }
+
 }

@@ -33,6 +33,60 @@
         "code",
         "maintenance"
       ]
+    },
+    {
+      "login": "SpeedsterF2",
+      "name": "Stefan Gürtler",
+      "avatar_url": "https://avatars.githubusercontent.com/u/38556808?v=4",
+      "profile": "http://schlothauer.de",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "gsmet",
+      "name": "Guillaume Smet",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1279749?v=4",
+      "profile": "https://lesincroyableslivres.fr/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "gastaldi",
+      "name": "George Gastaldi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54133?v=4",
+      "profile": "http://gastaldi.wordpress.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "sarxos",
+      "name": "Bartosz Firyn",
+      "avatar_url": "https://avatars.githubusercontent.com/u/472658?v=4",
+      "profile": "https://github.com/sarxos",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "andyhan",
+      "name": "Andy Han",
+      "avatar_url": "https://avatars.githubusercontent.com/u/142950?v=4",
+      "profile": "https://github.com/andyhan",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "skyrylyuk",
+      "name": "Serhiy Kyrylyuk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/785578?v=4",
+      "profile": "https://github.com/skyrylyuk",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -40,5 +94,7 @@
   "projectOwner": "quarkiverse",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular",
+  "commitType": "docs"
 }
